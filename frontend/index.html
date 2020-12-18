@@ -31,9 +31,35 @@
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
-
+				math: {
+					mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+					config: 'TeX-AMS_HTML-full',
+					// pass other options into `MathJax.Hub.Config()`
+					TeX: { Macros: { RR: "{\\bf R}" } }
+				},
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+
+			// Create WebSocket connection.
+			const localIp = '127.0.0.1';
+			const socket = new WebSocket(`ws://${localIp}:4000/`);
+
+			// Connection opened
+			socket.addEventListener('open', function (event) {
+				const helloMsg = {type: 'hello', data: 'hello'};
+				socket.send(JSON.stringify(helloMsg));
+			});
+
+			// Listen for messages
+			socket.addEventListener('message', function (event) {
+				const { data } = JSON.parse(event.data);
+
+				if (data === 'up') Reveal.up();
+				if (data === 'down') Reveal.down();
+				if (data === 'left') Reveal.left();
+				if (data === 'right') Reveal.right();
+				console.log(event.data);
 			});
 		</script>
 	</body>
