@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h3>La Batalla de Trafalgar</h3>
+				</section>
+				<section>
+					<img data-src="trafalgar/1.jpg" />
+				</section>
+				<section>
+					<img data-src="trafalgar/2.jpg" />
+				</section>
+				<section>
+					<img data-src="trafalgar/3.jpg" />
+				</section>
+				<section>
+					<img data-src="trafalgar/4.svg" height="600px"/>
+				</section>
+				<section>
+					<img data-src="trafalgar/5.jpg" />
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/chalkboard/plugin.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				math: {
+					mathjax: 'https://cdn.jsdelivr.net/gh/mathjax/mathjax@2.7.8/MathJax.js',
+					config: 'TeX-AMS_HTML-full',
+					TeX: { Macros: { RR: "{\\bf R}" } }
+				},
+				plugins: [ RevealChalkboard, RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+
+			// Create WebSocket connection.
+			const localIp = '127.0.0.1';
+			const socket = new WebSocket(`ws://${localIp}:4000/`);
+
+			// Connection opened
+			socket.addEventListener('open', function (event) {
+				const helloMsg = {type: 'hello', data: 'hello'};
+				socket.send(JSON.stringify(helloMsg));
+			});
+
+			// Listen for messages
+			socket.addEventListener('message', function (event) {
+				const { data } = JSON.parse(event.data);
+
+				if (data === 'up') Reveal.up();
+				if (data === 'down') Reveal.down();
+				if (data === 'left') Reveal.left();
+				if (data === 'right') Reveal.right();
+				console.log(event.data);
+			});
+		</script>
+	</body>
+</html>
