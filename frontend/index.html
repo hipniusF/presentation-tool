@@ -43,7 +43,7 @@
 
 			// Create WebSocket connection.
 			const localIp = '127.0.0.1';
-			const socket = new WebSocket(`ws://${localIp}:4000/`);
+			const socket = new WebSocket(`wss://marcopg.com/presentations/api/`);
 
 			// Connection opened
 			socket.addEventListener('open', function (event) {

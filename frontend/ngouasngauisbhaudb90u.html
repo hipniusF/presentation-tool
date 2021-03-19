@@ -40,8 +40,8 @@
 
 		<script src="dist/js/bootstrap.min.js"></script>
 		<script>
-			const localIp = '127.0.0.1';
-			const socket = new WebSocket(`ws://${localIp}:4000/`);
+			const localIp = 'http://80.211.184.75';
+			const socket = new WebSocket(`wss://marcopg.com/presentations/api/`);
 
 			const up = document.getElementById('up');
 			const down = document.getElementById('down');
